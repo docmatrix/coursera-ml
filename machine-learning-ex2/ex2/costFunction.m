@@ -26,7 +26,7 @@ log_one_sub_h = log(1 - sigmoid(z));
 errors = -y .* logh - (1 - y) .* log_one_sub_h;
 J = 1 / m * sum(errors);
 
-grad = 1 / m * sum((sigmoid(z) - y) .* X);
+grad = 1 / m * sum(repmat(sigmoid(z) - y, 1, length(theta)) .* X);
 
 
 

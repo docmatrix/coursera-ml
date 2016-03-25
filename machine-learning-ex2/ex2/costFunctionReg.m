@@ -26,7 +26,7 @@ mask = ones(size(theta'));
 mask(1) = 0;
 
 J = 1 / m * sum(errors) + lambda / (2 * m) * sum(mask .* theta'.^2);
-grad = 1 / m * sum((sigmoid(z) - y) .* X) + lambda / m .* mask .* theta';
+grad = 1 / m * sum(repmat(sigmoid(z) - y, 1, length(theta)) .* X) + lambda / m .* mask .* theta';
 
 
 % =============================================================
