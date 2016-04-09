@@ -69,7 +69,7 @@ m = size(z2, 1);
 a2 = [ones(m, 1), sigmoid(z2)];
 
 z3 = a2 * Theta2';
-a3 = sigmoid(a2 * Theta2');
+a3 = sigmoid(z3);
 
 h_theta = a3;
 
@@ -92,21 +92,27 @@ reg_term = lambda / (2 * m) * (sum((Theta1Reg .^ 2)(:)) + sum((Theta2Reg .^ 2)(:
 
 J = 1 / m * sum(errors(:)) + reg_term;
 
+for t = 1:m
+    a1 = [1; X(t,:)'];
+    z2 = Theta1 * a1;
+    a2 = [1; sigmoid(z2)]; 
+    z3 = Theta2 * a2;
+    a3 = sigmoid(z3);
 
+    delta_3 = a3 - y_vec(t,:)';
+    delta_2 = (Theta2' * delta_3)(2:end) .* sigmoidGradient(z2);
+    
+    Theta2_grad = Theta2_grad + delta_3 * a2';
+    Theta1_grad = Theta1_grad + delta_2 * a1';
+endfor
 
+Theta2_mask = ones(size(Theta2_grad));
+Theta2_mask(:, 1) = zeros(rows(Theta2_mask), 1);
+Theta1_mask = ones(size(Theta1_grad));
+Theta1_mask(:, 1) = zeros(rows(Theta1_mask), 1);
 
-
-
-
-
-
-
-
-
-
-
-
-
+Theta2_grad = Theta2_grad * 1 / m + lambda / m .* Theta2_mask .* Theta2;
+Theta1_grad = Theta1_grad * 1 / m + lambda / m .* Theta1_mask .* Theta1;
 
 % -------------------------------------------------------------
 
