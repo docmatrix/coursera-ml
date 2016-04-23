@@ -23,11 +23,34 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+_range = [0.01 0.03 0.1 0.3 1 3 10 30];
+lowest_c = 0;
+lowest_s = 0;
+min_error = 100000;
 
+%for i = 1:length(_range)
+%    tC = _range(i);
+%    for j = 1:length(_range)
+%        tSigma = _range(j);
+%        model = svmTrain(X, y, tC, @(x1, x2) gaussianKernel(x1, x2, tSigma));
+%        predictions = svmPredict(model, Xval);
+%        error = mean(double(predictions ~= yval));
+%        fprintf('Error: %f\n', error);
+%        if error < min_error
+%            min_error = error;
+%            lowest_c = tC;
+%            lowest_s = tSigma;
+%            fprintf('New lowest C: %f sigma: %f\n', tC, tSigma');
+%        end
+%    end
+%end
 
+lowest_c = 1.0;
+lowest_s = 0.1;
 
-
-
+C = lowest_c;
+sigma = lowest_s;
+fprintf('Lowest C: %f Lowest sigma: %f\n', C, sigma);
 
 % =========================================================================
 
